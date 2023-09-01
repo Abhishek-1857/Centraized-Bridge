@@ -35,13 +35,11 @@ contract BridgeStreak{
 
     function _lock(uint _amount)  internal {
         payable(address(this)).transfer(_amount);
-        require(balanceOf[msg.sender] >= _amount, "E02");
         locked[msg.sender] += _amount;
     }
 
     function send(address _to) payable external {
         uint amount_ = msg.value;
-        require(balanceOf[msg.sender] >= amount_, "E02");
         _lock(amount_);
         emit Locked(msg.sender, _to, amount_);
     }

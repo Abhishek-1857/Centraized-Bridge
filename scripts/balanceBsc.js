@@ -1,6 +1,6 @@
 
 const { ethers } = require("hardhat");
-const Contract_Address="0xc09A6029Aa5D8Be52601D7cBf73368a5D0F977Ab"
+const Contract_Address="0x37e2E3371e1086358821F6B866aEFc821aB5D123"
 const Gemma_Private_Key="e30c4dd594eecba7e0eb5abcb4c0ac59e152db66dbfecf1949d571cef0e687d0"
 const bridgeBsc=require("../artifacts/contracts/BridgeBsc.sol/BridgeBsc.json")
 
@@ -11,7 +11,7 @@ const signer=new ethers.Wallet(Gemma_Private_Key,provider);
 const BridgeBsc=new ethers.Contract(Contract_Address,bridgeBsc.abi,signer)
 
 async function main() {
-    balance= await BridgeBsc.getBalance("0x4F1536FC181C541f3eF766D227373f55d03CE0bA")
+    balance= await BridgeBsc.getBalance("0xb0276982D8F85A530D10A09208b08D9C1b3A7F7d")
     console.log("Wrapped Astreakk : ",balance.toString(),"W_AESTREAKK")
 }
 main()

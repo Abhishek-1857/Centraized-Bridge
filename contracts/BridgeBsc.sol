@@ -7,7 +7,7 @@ import "./IERC20.sol";
     Errors:
     -   E01: Unauthorised call, only owner of the contract allowed
     -   E02: Low Balance
-
+    -   E03: Cannot mint 0 tokens
 */
 
 contract BridgeBsc is IERC20 {
@@ -19,8 +19,10 @@ contract BridgeBsc is IERC20 {
     mapping(address => uint) public balanceOf;
     mapping(address => mapping(address => uint)) public allowance;
 
-    event Burn(address to, uint amount);
-    event Mint(address to, uint amount);
+    event Burn(uint amount);
+    event Mint(uint amount);
+    event BurnWrapped(address to,uint amount);
+    event MintWrapped(address to,uint amount);
 
     constructor(string memory _name, string memory _symbol){
       name = _name;
@@ -55,22 +57,28 @@ contract BridgeBsc is IERC20 {
         return true;
     }
 
-    function mint(address _to, uint _amount) external onlyOwner {
+    function mint_wrapped(address _to, uint _amount) external onlyOwner {
+        require(_amount>0,"E03");
         balanceOf[_to] += _amount;
         totalSupply += _amount;
-        emit Mint(_to, _amount);
+        emit MintWrapped(_to, _amount);
     }
 
-    function _burn(address _to, uint _amount) internal {
+    function mint(uint _amount) external onlyOwner {
+        totalSupply += _amount;
+        emit Mint(_amount);
+    }
+
+    function burn(uint _amount) external onlyOwner{
+        totalSupply -= _amount;
+        emit Burn(_amount);
+    }
+
+    function burn_wrapped(address _to, uint _amount) external {
         require(balanceOf[msg.sender] >= _amount, "E02");
         balanceOf[msg.sender] -= _amount;
         totalSupply -= _amount;
-        emit Burn(_to, _amount);
-    }
-
-    function send(address _to, uint _amount) external {
-        require(balanceOf[msg.sender] >= _amount, "E02");
-        _burn(_to, _amount);
+        emit BurnWrapped(_to, _amount);
     }
 
      function getBalance(address _account) external view returns (uint){
