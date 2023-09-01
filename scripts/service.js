@@ -3,8 +3,8 @@ const { ethers } = require("hardhat");
 const bridgEth=require("../artifacts/contracts/BridgeStreak.sol/BridgeStreak.json")
 const bridgeBsc=require("../artifacts/contracts/BridgeBsc.sol/BridgeBsc.json")
 
-const Contract_Address_Bsc="0x37e2E3371e1086358821F6B866aEFc821aB5D123"
-const Contract_Address_Streak="0xfdda63EAB54cB0F2A7471014cC8Ea9ad666553Fc"
+const Contract_Address_Bsc="0x848b9e164BDF704D8896bd281ec2B68470a7Eac3"
+const Contract_Address_Streak="0xBb0CE5D51bE734EDc5DF7a63746271fD1C72EF78"
 
 // const Bsc_Private_Key = "e30c4dd594eecba7e0eb5abcb4c0ac59e152db66dbfecf1949d571cef0e687d0"
 const Bsc_Private_Key = "dcb8b8242c7de5bbbb4f21711061e681811825a0d7215d5eede4d0df3bb6a7cd"

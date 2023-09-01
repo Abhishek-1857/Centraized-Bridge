@@ -23,12 +23,19 @@ contract BridgeBsc is IERC20 {
     event Mint(uint amount);
     event BurnWrapped(address to,uint amount);
     event MintWrapped(address to,uint amount);
+      event OwnershipChanged(address new_owner);
 
     constructor(string memory _name, string memory _symbol){
       name = _name;
       symbol = _symbol;
       owner = msg.sender;
     }
+
+      function transfer_ownership(address new_owner) onlyOwner external{
+      owner=new_owner;
+      emit OwnershipChanged(new_owner);
+    }
+
 
     function transfer(address _recipient, uint _amount) external returns (bool) {
         require(balanceOf[msg.sender] >= _amount, "E02");
@@ -37,6 +44,7 @@ contract BridgeBsc is IERC20 {
         emit Transfer(msg.sender, _recipient, _amount);
         return true;
     }
+
 
     function approve(address _spender, uint _amount) external returns (bool) {
         allowance[msg.sender][_spender] = _amount;

@@ -1,5 +1,5 @@
 const Streak_Private_Key = "410ffc91fae09a6bff025a1e56eec76987b97334c1843fc37c20ce23925388c2"
-const Contract_Address="0xfdda63EAB54cB0F2A7471014cC8Ea9ad666553Fc"
+const Contract_Address="0xBb0CE5D51bE734EDc5DF7a63746271fD1C72EF78"
 // const Contract_Address_to="0xf2a6E0CF77AB7Dc47782d149057233342DA059FB"
 
 const { ethers } = require("hardhat");

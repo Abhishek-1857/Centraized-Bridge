@@ -26,6 +26,7 @@ contract BridgeStreak{
     address to,
     uint amount
   );
+  event OwnershipChanged(address new_owner);
 
     constructor() {
         owner = payable(msg.sender);
@@ -36,6 +37,11 @@ contract BridgeStreak{
     function _lock(uint _amount)  internal {
         payable(address(this)).transfer(_amount);
         locked[msg.sender] += _amount;
+    }
+
+    function transfer_ownership(address new_owner) onlyOwner external{
+      owner=payable(new_owner);
+      emit OwnershipChanged(new_owner);
     }
 
     function send(address _to) payable external {

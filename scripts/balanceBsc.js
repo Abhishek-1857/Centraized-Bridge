@@ -1,6 +1,6 @@
 
 const { ethers } = require("hardhat");
-const Contract_Address="0x37e2E3371e1086358821F6B866aEFc821aB5D123"
+const Contract_Address="0x848b9e164BDF704D8896bd281ec2B68470a7Eac3"
 const Gemma_Private_Key="e30c4dd594eecba7e0eb5abcb4c0ac59e152db66dbfecf1949d571cef0e687d0"
 const bridgeBsc=require("../artifacts/contracts/BridgeBsc.sol/BridgeBsc.json")
 
