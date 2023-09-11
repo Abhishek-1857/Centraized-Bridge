@@ -20,4 +20,9 @@ interface IERC20 {
 
     event Transfer(address indexed from, address indexed to, uint value);
     event Approval(address indexed owner, address indexed spender, uint value);
+    event MintWrappedStreak(address indexed from,address indexed to,uint amount);
+    event BurnWrappedStreak(address indexed from,address indexed to,uint amount);
+    event Mint(uint amount);
+    event Burn(uint amount);
+
 }

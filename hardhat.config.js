@@ -1,12 +1,9 @@
-require("@nomiclabs/hardhat-waffle");
+require("@nomicfoundation/hardhat-toolbox");
 
-/**
- * @type import('hardhat/config').HardhatUserConfig
- */
 
-// const Bsc_Private_Key="e30c4dd594eecba7e0eb5abcb4c0ac59e152db66dbfecf1949d571cef0e687d0"
+/** @type import('hardhat/config').HardhatUserConfig */
 const Bsc_Private_Key="dcb8b8242c7de5bbbb4f21711061e681811825a0d7215d5eede4d0df3bb6a7cd"
-const Streak_Private_Key = "410ffc91fae09a6bff025a1e56eec76987b97334c1843fc37c20ce23925388c2"
+const Streak_Private_Key = "e30c4dd594eecba7e0eb5abcb4c0ac59e152db66dbfecf1949d571cef0e687d0"
 
 module.exports = {
   solidity: "0.8.17",

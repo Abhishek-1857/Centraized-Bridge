@@ -1,39 +1,52 @@
-const { ethers } = require("hardhat");
+require('dotenv').config();
 
-const bridgEth=require("../artifacts/contracts/BridgeStreak.sol/BridgeStreak.json")
-const bridgeBsc=require("../artifacts/contracts/BridgeBsc.sol/BridgeBsc.json")
+const STREAK_API_URL=process.env.STREAK_API_URL;
+const STREAK_PRIVATE_KEY = process.env.STREAK_PRIVATE_KEY;
+const STREAK_CONTRACT_ADDRESS = process.env.STREAK_CONTRACT_ADDRESS;
+const BSC_API_URL=process.env.BSC_API_URL;
+const BSC_PRIVATE_KEY = process.env.BSC_PRIVATE_KEY;
+const BSC_CONTRACT_ADDRESS = process.env.BSC_CONTRACT_ADDRESS;
+const {
+  ethers
+} = require("ethers");
+const streakcontract = require("../artifacts/contracts/BridgeStreak.sol/BridgeStreak.json");
 
-const Contract_Address_Bsc="0x848b9e164BDF704D8896bd281ec2B68470a7Eac3"
-const Contract_Address_Streak="0xBb0CE5D51bE734EDc5DF7a63746271fD1C72EF78"
 
-// const Bsc_Private_Key = "e30c4dd594eecba7e0eb5abcb4c0ac59e152db66dbfecf1949d571cef0e687d0"
-const Bsc_Private_Key = "dcb8b8242c7de5bbbb4f21711061e681811825a0d7215d5eede4d0df3bb6a7cd"
-const Streak_Private_Key = "e30c4dd594eecba7e0eb5abcb4c0ac59e152db66dbfecf1949d571cef0e687d0"
+const bsccontract = require("../artifacts/contracts/BridgeBsc.sol/BridgeBsc.json");
 
-const BscProvider = new ethers.providers.JsonRpcProvider("https://data-seed-prebsc-1-s1.binance.org:8545")
-const StreakProvider = new ethers.providers.JsonRpcProvider("http://44.236.234.203:8545")
+// console.log("module: ", ethers);
 
-const BscSigner = new ethers.Wallet(Bsc_Private_Key,BscProvider);
-const StreakSigner = new ethers.Wallet(Streak_Private_Key,StreakProvider);
+const bscprovider = new ethers.JsonRpcProvider(BSC_API_URL);
+bscprovider.pollingInterval=100;
+const bscsigner = new ethers.Wallet(BSC_PRIVATE_KEY, bscprovider);
+const BridgeBsc = new ethers.Contract(BSC_CONTRACT_ADDRESS, bsccontract.abi, bscsigner);
 
-// console.log(ServiceSigner.address)
-const BridgeStreak=new ethers.Contract(Contract_Address_Streak,bridgEth.abi,StreakSigner)
-const BridgeBsc=new ethers.Contract(Contract_Address_Bsc,bridgeBsc.abi,BscSigner)
-// console.log("done")
-async function main()
-{
-   
-    BridgeStreak.on("Locked", (from,to,amount) => {
+
+const streakprovider = new ethers.JsonRpcProvider(STREAK_API_URL);
+const streaksigner = new ethers.Wallet(STREAK_PRIVATE_KEY, streakprovider);
+const BridgeStreak = new ethers.Contract(STREAK_CONTRACT_ADDRESS, streakcontract.abi, streaksigner);
+
+async function main() {
+    BridgeStreak.on("Locked", async (from,to,amount) => {
         console.log(amount)
-         const tx=BridgeBsc.mint_wrapped(to,amount,{ gasPrice: ethers.utils.parseUnits('6','gwei').toString(),
+         const tx=await BridgeBsc.mintWrapped(from,to,amount,{ gasPrice: ethers.parseUnits('6','gwei').toString(),
          gasLimit: 177302});
+         tx.wait();
         console.log(`${ from } locked ${amount.toString()} on STREAK Chain`);
     });
-    BridgeBsc.on("BurnWrapped", (to, amount) => {
+    BridgeBsc.on("BurnWrappedStreak", async(from, to,amount) => {
         console.log(amount)
-        const tx=BridgeStreak.unlock(to,{value:amount,  gasPrice: ethers.utils.parseUnits('6','gwei').toString(),
+        const tx= await BridgeStreak.unlock(to,{value:amount,  gasPrice: ethers.parseUnits('6','gwei').toString(),
         gasLimit: 177302});
+        tx.wait()
        console.log(`Unlocked ${amount} on ${to} address on STREAK Chain`);
    });
+     
+   BridgeStreak.on("Unlocked", (to,amount) => {
+    console.log("unlocked")
+});
+BridgeBsc.on("MintWrappedStreak", (to, amount) => {
+    console.log("mintwrapped")
+});
 }
-main()
+main();

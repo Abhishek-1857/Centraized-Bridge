@@ -1,14 +1,15 @@
-import Pool from './pool'
-import Dispatcher from './dispatcher'
+import Client = require('./client')
+import Pool = require('./pool')
+import Dispatcher = require('./dispatcher')
 import { URL } from 'url'
 
-export default BalancedPool
+export = BalancedPool
 
 declare class BalancedPool extends Dispatcher {
-  constructor(url: string | string[] | URL | URL[], options?: Pool.Options);
+  constructor(url: string | URL | string[], options?: Pool.Options);
 
-  addUpstream(upstream: string | URL): BalancedPool;
-  removeUpstream(upstream: string | URL): BalancedPool;
+  addUpstream(upstream: string): BalancedPool;
+  removeUpstream(upstream: string): BalancedPool;
   upstreams: Array<string>;
 
   /** `true` after `pool.close()` has been called. */
