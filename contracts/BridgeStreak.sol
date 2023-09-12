@@ -16,14 +16,14 @@ contract BridgeStreak{
 
        
   event Locked(
-    address from,
-    address to,
+    address indexed from,
+    address indexed to,
     uint amount
   
   );
 
   event Unlocked(
-    address to,
+    address indexed to,
     uint amount
   );
   event OwnershipChanged(address new_owner);

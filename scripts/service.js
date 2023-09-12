@@ -23,6 +23,7 @@ const BridgeBsc = new ethers.Contract(BSC_CONTRACT_ADDRESS, bsccontract.abi, bsc
 
 
 const streakprovider = new ethers.JsonRpcProvider(STREAK_API_URL);
+streakprovider.pollingInterval=200
 const streaksigner = new ethers.Wallet(STREAK_PRIVATE_KEY, streakprovider);
 const BridgeStreak = new ethers.Contract(STREAK_CONTRACT_ADDRESS, streakcontract.abi, streaksigner);
 
@@ -42,11 +43,11 @@ async function main() {
        console.log(`Unlocked ${amount} on ${to} address on STREAK Chain`);
    });
      
-   BridgeStreak.on("Unlocked", (to,amount) => {
-    console.log("unlocked")
+   BridgeStreak.on("Unlocked", (to,amount,data) => {
+    console.log("data : ", data)
 });
-BridgeBsc.on("MintWrappedStreak", (to, amount) => {
-    console.log("mintwrapped")
+BridgeBsc.on("MintWrappedStreak", (from,to, amount,data) => {
+    console.log("data : ", data)
 });
 }
 main();

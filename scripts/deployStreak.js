@@ -1,7 +1,7 @@
 // This is a script for deploying your contracts. You can adapt it to deploy
 // yours, or create new ones.
 
-const path = require("path");
+const {ethers}=require("hardhat")
 
 async function main() {
   // This is just a convenience check
@@ -28,30 +28,8 @@ async function main() {
 
   console.log("Streak contract address:", token.address);
 
-  // We also save the contract's artifacts and address in the frontend directory
-  saveFrontendFiles(token);
 }
 
-function saveFrontendFiles(token) {
-  const fs = require("fs");
-  const contractsDir = path.join(__dirname, "..", "frontend", "src", "contracts");
-
-  if (!fs.existsSync(contractsDir)) {
-    fs.mkdirSync(contractsDir);
-  }
-
-  fs.writeFileSync(
-    path.join(contractsDir, "contract-address.json"),
-    JSON.stringify({ Token: token.address }, undefined, 2)
-  );
-
-  const TokenArtifact = artifacts.readArtifactSync("BridgeStreak");
-
-  fs.writeFileSync(
-    path.join(contractsDir, "BridgeStreak.json"),
-    JSON.stringify(TokenArtifact, null, 2)
-  );
-}
 
 main()
   .then(() => process.exit(0))
